@@ -15,13 +15,13 @@ WORK IN PROGRESS
 * get core logic to support X elevator system for Y story building
 * allow support for different types of algorithms by central elevator runner
 * set up different environments (rather than randomly generating people in random floors with random destinations)
-** simulate morning, where majority of people are generated at first floor to random destinations
-** simulate lunch, where random generation of floors to same general destination
+**simulate morning, where majority of people are generated at first floor to random destinations
+**simulate lunch, where random generation of floors to same general destination
 
 ## P2:
 * improve UI so we can see individual aspects of entire system
-** people on each floor/destinations, occupants in elevators, elevator state... etc
-** pause/resume feature
+**people on each floor/destinations, occupants in elevators, elevator state... etc
+**pause/resume feature
 
 ## P3:
 * have computer determine its own version of an efficient solution for different types of environments
