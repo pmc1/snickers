@@ -24,7 +24,7 @@ public class Floor {
     }
 
     public ArrayList<Elevator> getElevators() {
-        return getElevators();
+        return elevators;
     }
 
     public ArrayList<Person> getPeopleOnFloor() {
