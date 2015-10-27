@@ -30,4 +30,12 @@ public class Floor {
     public ArrayList<Person> getPeopleOnFloor() {
         return peopleOnFloor;
     }
+
+    public boolean equals(Floor floor) {
+        if (floor == null || floor.getFloorNumber() < 1 || floorNumber < 1) {
+            return false;
+        }
+
+        return this.floorNumber == floor.getFloorNumber();
+    }
 }

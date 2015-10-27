@@ -17,6 +17,7 @@ public class Elevator {
     private final ArrayList<Floor> floors;
 
     private Floor currentFloor;
+    private int[] floorsOfInterest;
     private ArrayList<Person> peopleInElevator;
     private ElevatorState state;
 
@@ -27,11 +28,14 @@ public class Elevator {
         // Assuming that ground floor is equivalent to lobby and first floor. As it should be.
         currentFloor = this.floors.get(1);
         state = ElevatorState.STATIONARY;
+        floorsOfInterest = new int[floors.size()];
     }
 
     public void dropOffPassengers() {
         for (Person person : peopleInElevator) {
-//            if (person.)
+            if (person.getDestination().equals(currentFloor)) {
+                peopleInElevator.remove(person);
+            }
         }
     }
 
@@ -39,6 +43,7 @@ public class Elevator {
         while (peopleInElevator.size() <= maxCapacity) {
             Person person = peopleOnFloor.remove(0);
             peopleInElevator.add(person);
+            floorsOfInterest[person.getDestination().getFloorNumber() - 1] = 1;
         }
     }
 
