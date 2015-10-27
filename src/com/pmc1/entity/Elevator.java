@@ -31,6 +31,10 @@ public class Elevator {
         floorsOfInterest = new int[floors.size()];
     }
 
+    /**
+     * Remove people from elevator that want to go to the current floor. Generally this method gets called
+     * pickUpPassengers. The assumption that no asshole people exist in this elevator system is made.
+     */
     public void dropOffPassengers() {
         for (Person person : peopleInElevator) {
             if (person.getDestination().equals(currentFloor)) {
@@ -39,18 +43,63 @@ public class Elevator {
         }
     }
 
+    /**
+     * Adds people into the elevator, by removing them from the floor.
+     * @param peopleOnFloor - ArrayList of people who want to enter the elevator. Doesn't necessarily mean
+     *                      that everyone will get on, depending on the capacity/size of the elevator
+     */
     public void pickUpPassengers(ArrayList<Person> peopleOnFloor) {
+        // Pick up passengers
         while (peopleInElevator.size() <= maxCapacity) {
             Person person = peopleOnFloor.remove(0);
             peopleInElevator.add(person);
             floorsOfInterest[person.getDestination().getFloorNumber() - 1] = 1;
         }
+
+        // Elevator picked up as much compatible passengers as possible
+        floorsOfInterest[currentFloor.getFloorNumber() - 1] = 0;
     }
 
+    /**
+     * 'Moves' elevator to specified floor with some basic checks.
+     * @param floor - the specified floor which the currentFloor of the elevator will be set to be
+     */
+    public void moveToFloor(Floor floor) {
+        if (floor.getFloorNumber() > currentFloor.getFloorNumber() && state == ElevatorState.UP) {
+            // TODO: add some logic with going from floor to floor rather than jumping to floors
+            currentFloor = floor;
+        } else if (floor.getFloorNumber() < currentFloor.getFloorNumber() && state == ElevatorState.DOWN) {
+            currentFloor = floor;
+        } else {
+            // same floor
+            // TODO: log error message as this shouldn't have occurred
+        }
+    }
+
+    /**
+     * Set elevator state to specified state.
+     * @param state - Elevator state which is UP, DOWN, or STATIONARY
+     */
     public void setElevatorState(ElevatorState state) {
         this.state = state;
     }
 
+    /**
+     * Sets elevator's floorsOfInterest to be true for a specified floor.
+     * @param floorNumber - floor number before subtracting one (array indices)
+     */
+    public void addFloorToInterest(int floorNumber) {
+        if (floorNumber >= 1 && floorNumber <= floors.size()) return; // TODO: add error logging
+        floorsOfInterest[floorNumber - 1] = 1;
+    }
+
+    public int[] getFloorsOfInterest() {
+        return floorsOfInterest;
+    }
+
+    /**
+     * Simple enum class that represents the different elevator states.
+     */
     public enum ElevatorState {
         UP, DOWN, STATIONARY;
     }
