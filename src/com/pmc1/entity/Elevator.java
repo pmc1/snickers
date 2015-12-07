@@ -21,12 +21,12 @@ public class Elevator {
     private ArrayList<Person> peopleInElevator;
     private ElevatorState state;
 
-    public Elevator(int elevatorNumber, final int maxCapacity, ArrayList<Floor> floors) {
+    public Elevator(final int elevatorNumber, final int maxCapacity, ArrayList<Floor> floors) {
         this.elevatorNumber = elevatorNumber;
         this.maxCapacity = maxCapacity;
         this.floors = floors;
-        // Assuming that ground floor is equivalent to lobby and first floor. As it should be.
-        currentFloor = this.floors.get(1);
+        // Assuming that ground floor is equivalent to lobby and first (0th) floor.
+        currentFloor = this.floors.get(0);
         state = ElevatorState.STATIONARY;
         floorsOfInterest = new int[floors.size()];
     }
@@ -53,11 +53,11 @@ public class Elevator {
         while (peopleInElevator.size() <= maxCapacity) {
             Person person = peopleOnFloor.remove(0);
             peopleInElevator.add(person);
-            floorsOfInterest[person.getDestination().getFloorNumber() - 1] = 1;
+            floorsOfInterest[person.getDestination().getFloorNumber()] = 1;
         }
 
         // Elevator picked up as much compatible passengers as possible
-        floorsOfInterest[currentFloor.getFloorNumber() - 1] = 0;
+        floorsOfInterest[currentFloor.getFloorNumber()] = 0;
     }
 
     /**
@@ -89,8 +89,8 @@ public class Elevator {
      * @param floorNumber - floor number before subtracting one (array indices)
      */
     public void addFloorToInterest(int floorNumber) {
-        if (floorNumber >= 1 && floorNumber <= floors.size()) return; // TODO: add error logging
-        floorsOfInterest[floorNumber - 1] = 1;
+        if (floorNumber < 0 && floorNumber >= floors.size()) return; // TODO: add error logging
+        floorsOfInterest[floorNumber] = 1;
     }
 
     public int[] getFloorsOfInterest() {

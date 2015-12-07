@@ -32,7 +32,7 @@ public class Floor {
     }
 
     public boolean equals(Floor floor) {
-        if (floor == null || floor.getFloorNumber() < 1 || floorNumber < 1) {
+        if (floor == null || floor.getFloorNumber() < 0 || floorNumber < 0) {
             return false;
         }
 
