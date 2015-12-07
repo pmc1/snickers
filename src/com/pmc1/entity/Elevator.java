@@ -44,20 +44,11 @@ public class Elevator {
     }
 
     /**
-     * Adds people into the elevator, by removing them from the floor.
-     * @param peopleOnFloor - ArrayList of people who want to enter the elevator. Doesn't necessarily mean
-     *                      that everyone will get on, depending on the capacity/size of the elevator
+     * Send request to floor to add relevant occupants into the elevator.
      */
-    public void pickUpPassengers(ArrayList<Person> peopleOnFloor) {
-        // Pick up passengers
-        while (peopleInElevator.size() <= maxCapacity) {
-            Person person = peopleOnFloor.remove(0);
-            peopleInElevator.add(person);
-            floorsOfInterest[person.getDestination().getFloorNumber() - 1] = 1;
-        }
+    public void pickUpPassengers() {
+        currentFloor.sendOccupantsToElevator(elevatorNumber, peopleInElevator.size(), maxCapacity, state);
 
-        // Elevator picked up as much compatible passengers as possible
-        floorsOfInterest[currentFloor.getFloorNumber() - 1] = 0;
     }
 
     /**

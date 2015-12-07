@@ -31,6 +31,30 @@ public class Floor {
         return peopleOnFloor;
     }
 
+    /**
+     * Request method from elevator to pick up occupants in floor to elevator.
+     *
+     * TODO: Add concurrency support from different elevators
+     * @param elevatorNumber
+     * @param elevatorPeopleSize
+     * @param elevatorMaxCapacity
+     */
+    public void sendOccupantsToElevator(int elevatorNumber, int elevatorPeopleSize, int elevatorMaxCapacity,
+            Elevator.ElevatorState state) {
+        Elevator elevator = elevators.get(elevatorNumber);
+
+        // Pick up passengers
+        while (peopleInElevator.size() <= maxCapacity) {
+            Person person = peopleOnFloor.remove(0);
+            peopleInElevator.add(person);
+            floorsOfInterest[person.getDestination().getFloorNumber() - 1] = 1;
+        }
+
+        // Elevator picked up as much compatible passengers as possible
+        floorsOfInterest[currentFloor.getFloorNumber() - 1] = 0;
+
+    }
+
     public boolean equals(Floor floor) {
         if (floor == null || floor.getFloorNumber() < 1 || floorNumber < 1) {
             return false;
