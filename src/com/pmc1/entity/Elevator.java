@@ -17,23 +17,24 @@ public class Elevator {
     private final ArrayList<Floor> floors;
 
     private Floor currentFloor;
-    private int[] floorsOfInterest;
+    private int[] floorsOfInterest; // TODO: determine if this should this exist in the Elevator System or
+                                    // in the Elevator itself?
     private ArrayList<Person> peopleInElevator;
     private ElevatorState state;
 
-    public Elevator(int elevatorNumber, final int maxCapacity, ArrayList<Floor> floors) {
+    public Elevator(final int elevatorNumber, final int maxCapacity, ArrayList<Floor> floors) {
         this.elevatorNumber = elevatorNumber;
         this.maxCapacity = maxCapacity;
         this.floors = floors;
-        // Assuming that ground floor is equivalent to lobby and first floor. As it should be.
-        currentFloor = this.floors.get(1);
+        // Assuming that ground floor is equivalent to lobby and first (0th) floor.
+        currentFloor = this.floors.get(0);
         state = ElevatorState.STATIONARY;
         floorsOfInterest = new int[floors.size()];
     }
 
     /**
-     * Remove people from elevator that want to go to the current floor. Generally this method gets called
-     * pickUpPassengers. The assumption that no asshole people exist in this elevator system is made.
+     * Remove people from elevator that want to go to the current floor. Generally this method gets called before
+     * pickUpPassengers.
      */
     public void dropOffPassengers() {
         for (Person person : peopleInElevator) {
@@ -44,11 +45,11 @@ public class Elevator {
     }
 
     /**
-     * Send request to floor to add relevant occupants into the elevator.
+     * Send request to floor to add relevant occupants into the elevator. The heart of this method lives in the
+     * Floor class because of the possibility of concurrent requests being made on the same floor.
      */
     public void pickUpPassengers() {
-        currentFloor.sendOccupantsToElevator(elevatorNumber, peopleInElevator.size(), maxCapacity, state);
-
+        currentFloor.sendOccupantsToElevator(elevatorNumber, peopleInElevator, maxCapacity, state, floorsOfInterest);
     }
 
     /**
@@ -80,8 +81,8 @@ public class Elevator {
      * @param floorNumber - floor number before subtracting one (array indices)
      */
     public void addFloorToInterest(int floorNumber) {
-        if (floorNumber >= 1 && floorNumber <= floors.size()) return; // TODO: add error logging
-        floorsOfInterest[floorNumber - 1] = 1;
+        if (floorNumber < 0 && floorNumber >= floors.size()) return; // TODO: add error logging
+        floorsOfInterest[floorNumber] = 1;
     }
 
     public int[] getFloorsOfInterest() {
@@ -92,6 +93,18 @@ public class Elevator {
      * Simple enum class that represents the different elevator states.
      */
     public enum ElevatorState {
-        UP, DOWN, STATIONARY;
+        UP(1),
+        DOWN(-1),
+        STATIONARY(0);
+
+        private final int value;
+
+        ElevatorState(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 }
