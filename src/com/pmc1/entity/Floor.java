@@ -27,9 +27,9 @@ public class Floor {
 //        return elevators;
 //    }
 //
-//    public ArrayList<Person> getPeopleOnFloor() {
-//        return peopleOnFloor;
-//    }
+    public ArrayList<Person> getPeopleOnFloor() {
+        return peopleOnFloor;
+    }
 
     /**
      * Request method from elevator to pick up occupants in floor to elevator.

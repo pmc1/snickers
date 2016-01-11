@@ -1,6 +1,10 @@
 package com.pmc1.environment;
 
+import com.pmc1.entity.Floor;
+import com.pmc1.entity.Person;
+
 import java.lang.IndexOutOfBoundsException;
+import java.util.ArrayList;
 
 /**
  * Simple generator of people that gets start/destined floors from the supplied environment.
@@ -12,19 +16,27 @@ public class PersonGenerator {
 
     public PersonGenerator(ArrayList<Floor> floorList, Environment environment) {
         this.floorList = floorList;
-        this.environment = environment == null ? new RandomEnvironment() : environment;
+        this.environment = environment == null ? new RandomEnvironment(floorList.size()) : environment;
     }
 
     public Person generatePerson() {
-        try {
-            Floor startFloor = floorList.get(environment.getStartFloor());
-            Floor desiredFloor = floorList.get(environment.getDestinedFloor());
+        Person person = null;
 
-            Person person = new Person(desiredFloor);
+        int startFloorInt = environment.getStartFloor();
+        int destinationFloorInt = environment.getDestinationFloor();
+        while (destinationFloorInt == startFloorInt) {
+            destinationFloorInt = environment.getDestinationFloor();
+        }
+        try {
+            Floor startFloor = floorList.get(startFloorInt);
+            Floor desiredFloor = floorList.get(destinationFloorInt);
+
+            person = new Person(desiredFloor);
             startFloor.getPeopleOnFloor().add(person);
         } catch (IndexOutOfBoundsException e) {
             //TODO: log and count error
-            System.out.println("Generated person on floor " + startFloorNumber + " with desired floor " + desiredFloor);
+            System.out.println("Generated person on floor " + startFloorInt + " with desired floor " + destinationFloorInt);
         }
+        return person;
     }
 }
