@@ -7,18 +7,19 @@ import java.util.Random;
  */
 public class RandomEnvironment implements Environment {
     private int floorSize;
+    private Random random;
 
     public RandomEnvironment(int floorSize) {
-        this.floorSize = floorSize;
+        random = new Random();
     }
 
     @Override
-    public int getStartFloor() {
-        return new Random().nextInt(floorSize);
+    public int getStartFloor(int maxRange) {
+        return random.nextInt(floorSize);
     }
 
     @Override
-    public int getDestinationFloor() {
-        return getStartFloor();
+    public int getDestinationFloor(int maxRange) {
+        return getStartFloor(maxRange);
     }
 }

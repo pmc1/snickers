@@ -38,4 +38,12 @@ public class Building {
             elevatorList.add(j, elevator);
         }
     }
+
+    public ArrayList<Elevator> getElevatorList() {
+        return elevatorList;
+    }
+
+    public ArrayList<Floor> getFloorList() {
+        return floorList;
+    }
 }
