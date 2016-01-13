@@ -26,6 +26,7 @@ WORK IN PROGRESS
 ## P3:
 * have computer determine its own version of an efficient solution for different types of environments
 * display good analysis of results
+* time average floor wait time, and elevator average wait time. gather metrics of all possible data.
 
 ## P4:
 * make a game out of this lol.
