@@ -4,7 +4,7 @@ Elevator System for displaying different elevator algorithms and the efficiency 
 
 WORK IN PROGRESS
 
-# Short term goals:
+# P-goals:
 ## P0:
 * get core logic working with one elevator system in 2-3 story building
 * generate random people with destinations randomly throughout building
